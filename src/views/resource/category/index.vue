@@ -1,35 +1,20 @@
 <template>
     <div class="article-lists">
         <el-card class="!border-none" shadow="never">
-            <el-button @click="handleAddMoudle">添加模块</el-button>
+            <el-button @click="handleAddMoudle">添加分类</el-button>
         </el-card>
         <el-card class="!border-none mt-4" shadow="never">
             <el-table size="large" v-loading="pager.loading" :data="pager.lists">
-                <el-table-column label="模块ID" prop="moduleid" min-width="50" />
-                <el-table-column
-                    label="名称"
-                    prop="name"
-                    min-width="120"
-                    show-tooltip-when-overflow
-                >
+                <el-table-column label="分类ID" prop="category_id" min-width="50" />
+                <el-table-column label="名称" prop="title" min-width="120" show-tooltip-when-overflow>
                 </el-table-column>
-                <el-table-column label="游戏数" prop="gameCount" min-width="100" />
+                <el-table-column label="漫画数" prop="count" min-width="100" />
                 <el-table-column label="操作" fixed="right">
                     <template #default="{ row }">
-                        <el-button
-                            v-perms="['xmod:module:edit']"
-                            type="primary"
-                            link
-                            @click="handleEdit(row)"
-                        >
+                        <el-button v-perms="['comic:category:edit']" type="primary" link @click="handleEdit(row)">
                             编辑
                         </el-button>
-                        <el-button
-                            v-perms="['xmod:module:del']"
-                            type="danger"
-                            link
-                            @click="handleDelete(row.id)"
-                        >
+                        <el-button v-perms="['comic:category:del']" type="danger" link @click="handleDelete(row.id)">
                             删除
                         </el-button>
                     </template>
@@ -38,17 +23,12 @@
             <div class="flex justify-end mt-4">
                 <pagination v-model="pager" @change="getLists" />
             </div>
-            <edit-popup
-                v-if="showEdit"
-                ref="editRef"
-                @success="getLists"
-                @close="showEdit = false"
-            />
+            <edit-popup v-if="showEdit" ref="editRef" @success="getLists" @close="showEdit = false" />
         </el-card>
     </div>
 </template>
 <script lang="ts" setup>
-import { moduleDel, moduleList } from '@/api/module'
+import { getCategoryList } from '@/api/comic'
 import { usePaging } from '@/hooks/usePaging'
 import { getRoutePath } from '@/router'
 import feedback from '@/utils/feedback'
@@ -57,7 +37,7 @@ import EditPopup from './edit.vue'
 
 const editRef = shallowRef<InstanceType<typeof EditPopup>>()
 const { pager, getLists } = usePaging({
-    fetchFun: moduleList
+    fetchFun: getCategoryList
 })
 
 const showEdit = ref(false)
@@ -76,10 +56,10 @@ const handleEdit = async (data: any) => {
 }
 
 const handleDelete = async (id: number) => {
-    await feedback.confirm('确定要删除？')
-    await moduleDel({ id })
-    feedback.msgSuccess('删除成功')
-    getLists()
+    // await feedback.confirm('确定要删除？')
+    // await moduleDel({ id })
+    // feedback.msgSuccess('删除成功')
+    // getLists()
 }
 
 const handleOffline = (gid: string) => {

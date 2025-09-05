@@ -13,7 +13,7 @@ interface Options {
 export function usePaging(options: Options) {
     const {
         page = 1,
-        size = 15,
+        size = 20,
         fetchFun,
         params = {},
         fixedParams = {},

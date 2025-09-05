@@ -17,7 +17,7 @@ export default defineConfig({
         port: 8088,
         proxy: {
             '/adminapi': {
-                target: 'http://192.168.2.11:8084/',
+                target: 'http://127.0.0.1:8082/',
                 //target: 'http://qm.winperforms.com:8099',
                 changeOrigin: true,
                 rewrite: (p) => p.replace(/^\/adminapi/, '/adminapi')
